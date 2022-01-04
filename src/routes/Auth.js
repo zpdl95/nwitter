@@ -1,4 +1,4 @@
-import { authService } from "fbase";
+import { authService, fireBase } from "fbase";
 import React, { useState } from "react";
 
 const Auth = () => {
@@ -43,6 +43,21 @@ const Auth = () => {
   };
 
   const toggleAccount = () => setNewAccount((prev) => !prev);
+  const onSocialClick = async (event) => {
+    const {
+      target: { name },
+    } = event;
+    let provider;
+    if (name === "google") {
+      /* firebase의 google로그인 방법 */
+      provider = new fireBase.auth.GoogleAuthProvider();
+    } else if (name === "github") {
+      /* firebase의 github로그인 방법 */
+      provider = new fireBase.auth.GithubAuthProvider();
+    }
+    /* firebase의 팝업창 띄워서 로그인 인증 */
+    await authService.signInWithPopup(provider);
+  };
   return (
     <div>
       <form onSubmit={onSubmit}>
@@ -71,8 +86,12 @@ const Auth = () => {
         {newAccount ? "Log In" : "Create Account"}
       </span>
       <div>
-        <button>Countinue with Google</button>
-        <button>Countinue with Github</button>
+        <button onClick={onSocialClick} name="google">
+          Countinue with Google
+        </button>
+        <button onClick={onSocialClick} name="github">
+          Countinue with Github
+        </button>
       </div>
     </div>
   );
