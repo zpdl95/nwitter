@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src"
+  },
+  "include": ["src"]
+}
+/* baseUrl에 설정된 경로를 기본적으로 알게 된다.
+따라서 import로 파일을 가져올때 "./" or"../"를 사용할 필요가 없다 */
