@@ -2,7 +2,7 @@ import { dbService } from "fbase";
 import React, { useEffect } from "react";
 import { useState } from "react/cjs/react.development";
 
-const Home = () => {
+const Home = ({ userObj }) => {
   const [nweet, setNweet] = useState("");
   const [nweets, setNweets] = useState([]);
 
@@ -10,21 +10,28 @@ const Home = () => {
     getNweets();
   }, []);
 
-  const getNweets = async () => {
-    const dbNweets = await dbService.collection("nweets").get();
-    dbNweets.forEach((document) => {
-      const nweetObject = {
-        ...document.data(),
-        id: document.id,
-      };
-      setNweets((prev) => [nweetObject, ...prev]);
-    });
+  const getNweets = () => {
+    /* callback함수가 아니라 await를 사용하지 않음 */
+    /* orderby를 사용하여 정령된 리스트를 받음 */
+    /* onSnapshot은 실시간 모든 데이터베이스이벤트에 반응함 */
+    dbService
+      .collection("nweets")
+      .orderBy("createAt", "desc")
+      .onSnapshot((snapshot) => {
+        const nweetArray = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        console.log(nweetArray);
+        setNweets(nweetArray);
+      });
   };
   const onSubmit = async (event) => {
     event.preventDefault();
     await dbService.collection("nweets").add({
-      nweet,
+      text: nweet,
       createAt: new Date().toLocaleString(),
+      creatorId: userObj.uid,
     });
     setNweet("");
   };
@@ -49,7 +56,7 @@ const Home = () => {
       <div>
         {nweets.map((nweet) => (
           <div key={nweet.id}>
-            <h4>{nweet.nweet}</h4>
+            <h4>{nweet.text}</h4>
           </div>
         ))}
       </div>
