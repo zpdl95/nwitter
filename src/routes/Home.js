@@ -1,10 +1,15 @@
+import { dbService } from "fbase";
 import React from "react";
 import { useState } from "react/cjs/react.development";
 
 const Home = () => {
   const [nweet, setNweet] = useState("");
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
+    await dbService.collection("nweets").add({
+      nweet,
+      createAt: Date.now(),
+    });
     setNweet("");
   };
   const onChange = (event) => {
@@ -29,3 +34,5 @@ const Home = () => {
   );
 };
 export default Home;
+
+/* noSQL DB는 collection이라는 폴더를 생성하고 document라는 자료를 넣어 만든 것이다 */
