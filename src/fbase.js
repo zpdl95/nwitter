@@ -1,5 +1,6 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
+import "firebase/compat/database";
 
 /* 환경설정값을 사용하는 이유는 github때문이지 빌드할때 숨기기 위함이 아님. 빌드하면 다 값이 원래값으로 바뀜 */
 const firebaseConfig = {
