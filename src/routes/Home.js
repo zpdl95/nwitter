@@ -1,3 +1,4 @@
+import Nweet from "components/Nweet";
 import { dbService } from "fbase";
 import React, { useEffect } from "react";
 import { useState } from "react/cjs/react.development";
@@ -55,9 +56,12 @@ const Home = ({ userObj }) => {
       </form>
       <div>
         {nweets.map((nweet) => (
-          <div key={nweet.id}>
-            <h4>{nweet.text}</h4>
-          </div>
+          <Nweet
+            key={nweet.id}
+            nweetObj={nweet}
+            /* 이 트윗 작성자가 로그인한 유저인이 판단 */
+            isOwner={nweet.creatorId === userObj.uid}
+          />
         ))}
       </div>
     </div>
