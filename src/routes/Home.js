@@ -29,6 +29,7 @@ const Home = ({ userObj }) => {
   };
   const onSubmit = async (event) => {
     event.preventDefault();
+    /* 컬렉션 이름을 정해서 저장 */
     await dbService.collection("nweets").add({
       text: nweet,
       createAt: new Date().toLocaleString(),
