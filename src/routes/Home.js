@@ -38,10 +38,23 @@ const Home = ({ userObj }) => {
     setNweet("");
   };
   const onChange = (event) => {
+    /* event.target은 html을 나타냄 */
     const {
       target: { value },
     } = event;
     setNweet(value);
+  };
+  const onFileChange = (event) => {
+    const {
+      target: { files },
+    } = event;
+    const theFile = files[0];
+    /* FileReader()는 유저의 컴퓨터에 저장되어있는 파일을 읽어드리는 함수 */
+    const fileReader = new FileReader();
+    /* 업로드한 파일을 url로 변환해서 읽어드림 */
+    fileReader.readAsDataURL(theFile);
+    /* 파일읽기가 끝나면 onloadend함수의 이벤트가 발생 */
+    fileReader.onloadend = (finishedEvent) => console.log(finishedEvent);
   };
   return (
     <div>
@@ -53,6 +66,7 @@ const Home = ({ userObj }) => {
           placeholder="What's on your mind?"
           maxLength={120}
         />
+        <input type={"file"} accept="image/*" onChange={onFileChange} />
         <input type={"submit"} value={"Nweet"} />
       </form>
       <div>
