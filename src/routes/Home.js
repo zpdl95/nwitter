@@ -1,5 +1,5 @@
 import Nweet from "components/Nweet";
-import { dbService } from "fbase";
+import { dbService, storageService } from "fbase";
 import React, { useEffect, useRef } from "react";
 import { useState } from "react/cjs/react.development";
 
@@ -7,6 +7,7 @@ const Home = ({ userObj }) => {
   const [nweet, setNweet] = useState("");
   const [nweets, setNweets] = useState([]);
   const [attachment, setAttachment] = useState();
+  const [attachmentName, setAttachmentName] = useState("");
   /* 선택된 파일 값을 제거하기위해 input값과 연결 */
   const attachmentPhoto = useRef();
   useEffect(() => {
@@ -25,20 +26,26 @@ const Home = ({ userObj }) => {
           id: doc.id,
           ...doc.data(),
         }));
-        console.log(nweetArray);
         setNweets(nweetArray);
       });
   };
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    /* 컬렉션 이름을 정해서 저장 */
-    await dbService.collection("nweets").add({
-      text: nweet,
-      createAt: new Date().toLocaleString(),
-      creatorId: userObj.uid,
-    });
-    setNweet("");
+    /* storageService.ref() = root reference 생성 */
+    /* .child() = 인자값이 파일이름이자 경로, /를 추가하면 폴더생성 아니면 root에 생성 */
+    const fileRef = storageService
+      .ref()
+      .child(`${userObj.uid}/${attachmentName}`);
+    /* putString의 포맷은 'base64','base64url','data_url' 이 셋으로 정해져 있다 */
+    fileRef.putString(attachment, "data_url");
+    // /* 컬렉션 이름을 정해서 저장 */
+    // await dbService.collection("nweets").add({
+    //   text: nweet,
+    //   createAt: new Date().toLocaleString(),
+    //   creatorId: userObj.uid,
+    // });
+    // setNweet("");
   };
 
   const onChange = (event) => {
@@ -63,6 +70,7 @@ const Home = ({ userObj }) => {
       const {
         currentTarget: { result },
       } = finishedEvent;
+      setAttachmentName(attachmentPhoto.current.value.split("\\")[2]);
       setAttachment(result);
     };
   };
