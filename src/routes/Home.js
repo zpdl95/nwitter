@@ -1,12 +1,14 @@
 import Nweet from "components/Nweet";
 import { dbService } from "fbase";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useState } from "react/cjs/react.development";
 
 const Home = ({ userObj }) => {
   const [nweet, setNweet] = useState("");
   const [nweets, setNweets] = useState([]);
-
+  const [attachment, setAttachment] = useState();
+  /* 선택된 파일 값을 제거하기위해 input값과 연결 */
+  const attachmentPhoto = useRef();
   useEffect(() => {
     getNweets();
   }, []);
@@ -27,6 +29,7 @@ const Home = ({ userObj }) => {
         setNweets(nweetArray);
       });
   };
+
   const onSubmit = async (event) => {
     event.preventDefault();
     /* 컬렉션 이름을 정해서 저장 */
@@ -37,6 +40,7 @@ const Home = ({ userObj }) => {
     });
     setNweet("");
   };
+
   const onChange = (event) => {
     /* event.target은 html을 나타냄 */
     const {
@@ -44,18 +48,30 @@ const Home = ({ userObj }) => {
     } = event;
     setNweet(value);
   };
+
   const onFileChange = (event) => {
     const {
       target: { files },
     } = event;
     const theFile = files[0];
-    /* FileReader()는 유저의 컴퓨터에 저장되어있는 파일을 읽어드리는 함수 */
+    /* FileReader()는 유저의 컴퓨터에 저장되어있는 파일을 읽어드리는 클래스 */
     const fileReader = new FileReader();
     /* 업로드한 파일을 url로 변환해서 읽어드림 */
     fileReader.readAsDataURL(theFile);
     /* 파일읽기가 끝나면 onloadend함수의 이벤트가 발생 */
-    fileReader.onloadend = (finishedEvent) => console.log(finishedEvent);
+    fileReader.onloadend = (finishedEvent) => {
+      const {
+        currentTarget: { result },
+      } = finishedEvent;
+      setAttachment(result);
+    };
   };
+
+  const onClearAttachment = () => {
+    setAttachment(null);
+    attachmentPhoto.current.value = null;
+  };
+
   return (
     <div>
       <form onSubmit={onSubmit}>
@@ -66,8 +82,19 @@ const Home = ({ userObj }) => {
           placeholder="What's on your mind?"
           maxLength={120}
         />
-        <input type={"file"} accept="image/*" onChange={onFileChange} />
+        <input
+          ref={attachmentPhoto}
+          type={"file"}
+          accept="image/*"
+          onChange={onFileChange}
+        />
         <input type={"submit"} value={"Nweet"} />
+        {attachment && (
+          <div>
+            <img src={attachment} width={"100px"} height={"100px"} />
+            <button onClick={onClearAttachment}>Clear photo</button>
+          </div>
+        )}
       </form>
       <div>
         {nweets.map((nweet) => (
