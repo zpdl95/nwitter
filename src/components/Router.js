@@ -14,7 +14,7 @@ const AppRouter = ({ isLoggedIn, userObj }) => {
   return (
     <Router>
       {/* && = 단축평가 */}
-      {isLoggedIn && <Navigation />}
+      {isLoggedIn && <Navigation userObj={userObj} />}
       <Switch>
         {isLoggedIn ? (
           <>
