@@ -1,4 +1,4 @@
-import { dbService } from "fbase";
+import { dbService, storageService } from "fbase";
 import React from "react";
 import { useState } from "react/cjs/react.development";
 
@@ -10,6 +10,10 @@ const Nweet = ({ nweetObj, isOwner }) => {
     if (ok) {
       /* doc() 문서 경로 작성 */
       dbService.doc(`nweets/${nweetObj.id}`).delete();
+      if (nweetObj.attachmentUrl) {
+        /* 해댱 url로 부터 ref를 찾아 삭제 */
+        storageService.refFromURL(nweetObj.attachmentUrl).delete();
+      }
     }
   };
   const toggleEditing = () => setEditing((prev) => !prev);
