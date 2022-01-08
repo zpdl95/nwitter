@@ -45,6 +45,7 @@ const Profile = ({ userObj, refreshUser }) => {
       await userObj.updateProfile({
         displayName: newDisplayName,
       });
+      setNewDisplayName("");
       refreshUser();
     }
   };
