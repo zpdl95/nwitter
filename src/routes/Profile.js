@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { authService, dbService } from "fbase";
 import { useHistory } from "react-router-dom";
 
-const Profile = ({ userObj }) => {
+const Profile = ({ userObj, refreshUser }) => {
   /* 화면이동에 사용하는 기록 객체를 사용할 수 있는 hook */
   const history = useHistory();
   /* ?? = ES11에서 도입된 null 병합 연산자 */
@@ -45,6 +45,7 @@ const Profile = ({ userObj }) => {
       await userObj.updateProfile({
         displayName: newDisplayName,
       });
+      refreshUser();
     }
   };
 
