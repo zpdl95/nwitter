@@ -1,5 +1,5 @@
-import { dbService, storageService } from "fbase";
 import React, { useRef, useState } from "react";
+import { dbService, storageService } from "fbase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 
@@ -90,6 +90,7 @@ const NweetFactory = ({ userObj }) => {
         <FontAwesomeIcon icon={faPlus} />
       </label>
       <input
+        ref={attachmentPhoto}
         id="attach-file"
         type="file"
         accept="image/*"

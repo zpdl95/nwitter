@@ -1,5 +1,5 @@
-import { authService } from "fbase";
 import React, { useState } from "react";
+import { authService } from "fbase";
 
 const AuthForm = () => {
   const [email, setEmail] = useState("");
