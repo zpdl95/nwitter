@@ -6,3 +6,5 @@
 6. firebase에서 Authentication설정, github에서 Developer setting에 있는 OAuth Apps 설정
 7. firebase에서 DB설정
 8. npm i @fortawesome/fontawesome-free @fortawesome/fontawesome-svg-core @fortawesome/free-brands-svg-icons @fortawesome/free-regular-svg-icons @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome -> Font Awesome의 SVG 기반 아이콘을 활성화 시키기 위한 기본 패키지 설치(fontawesome-svg-core), 무료로 제공되는 Solid, Regular Brands 3개의 카테고리에 대한 패키지 설치(free-solid, free-regular, free-brands), Font Awesome을 React 컴포넌트 형태로 사용할 수 있도록 해주는 패키지(react-fontawesome)
+9. npm i gh-pages -> 깃허브에 배포할 수 있는 패키지 다운
+10. package.json에 "deploy": "gh-pages -d build","predeploy": "npm run build" 를 작성. 깃허브 패키지에 -d(디렉토리) build(폴더이름)를 알려준다 배포하기 위해 배포할 폴더를 알려준다

@@ -7,7 +7,7 @@ import Profile from "routes/Profile";
 
 const AppRouter = ({ refreshUser, isLoggedIn, userObj }) => {
   return (
-    <Router>
+    <Router basename="/">
       {/* && = 단축평가 */}
       {isLoggedIn && <Navigation userObj={userObj} />}
       <div
