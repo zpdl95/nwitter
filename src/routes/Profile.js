@@ -27,6 +27,7 @@ const Profile = ({ userObj, refreshUser }) => {
 
   useEffect(() => {
     getMyNweets();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onChange = (event) => {
