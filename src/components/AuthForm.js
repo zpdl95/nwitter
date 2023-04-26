@@ -1,19 +1,19 @@
-import React, { useState } from "react";
-import { authService } from "fbase";
+import React, { useState } from 'react';
+import { authService } from 'fbase';
 
 const AuthForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [newAccount, setNewAccount] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   const onChange = (event) => {
     const {
       target: { name, value },
     } = event;
-    if (name === "email") {
+    if (name === 'email') {
       setEmail(value);
-    } else if (name === "password") {
+    } else if (name === 'password') {
       setPassword(value);
     }
   };
@@ -21,7 +21,6 @@ const AuthForm = () => {
   const onSubmit = async (event) => {
     event.preventDefault();
     try {
-      let data;
       if (newAccount) {
         /* firebase의 유저생성코드 */
         /* 유저생성을 해도 자동로그인 시켜줌 */
@@ -29,13 +28,10 @@ const AuthForm = () => {
         /* local: 브라우저가 켜져있으면 유지
                 session: 탭이 켜져있으면 유지
                 none: 유지 안 함 */
-        data = await authService.createUserWithEmailAndPassword(
-          email,
-          password
-        );
+        await authService.createUserWithEmailAndPassword(email, password);
       } else {
         /* firebase의 로그인코드 */
-        data = await authService.signInWithEmailAndPassword(email, password);
+        await authService.signInWithEmailAndPassword(email, password);
       }
     } catch (error) {
       setError(error.message);
@@ -47,34 +43,34 @@ const AuthForm = () => {
 
   return (
     <>
-      <form onSubmit={onSubmit} className="container">
+      <form onSubmit={onSubmit} className='container'>
         <input
-          name="email"
-          type={"text"}
-          placeholder="Email"
+          name='email'
+          type={'text'}
+          placeholder='Email'
           required
           value={email}
           onChange={onChange}
-          className="authInput"
+          className='authInput'
         />
         <input
-          name="password"
-          type={"password"}
-          placeholder="Password"
+          name='password'
+          type={'password'}
+          placeholder='Password'
           required
           value={password}
           onChange={onChange}
-          className="authInput"
+          className='authInput'
         />
         <input
-          className="authInput authSubmit"
-          type={"submit"}
-          value={newAccount ? "Create Account" : "Log In"}
+          className='authInput authSubmit'
+          type={'submit'}
+          value={newAccount ? 'Create Account' : 'Log In'}
         />
-        {error && <span className="authError">{error}</span>}
+        {error && <span className='authError'>{error}</span>}
       </form>
-      <span onClick={toggleAccount} className="authSwitch">
-        {newAccount ? "Log In" : "Create Account"}
+      <span onClick={toggleAccount} className='authSwitch'>
+        {newAccount ? 'Log In' : 'Create Account'}
       </span>
     </>
   );

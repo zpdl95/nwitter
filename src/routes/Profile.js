@@ -1,27 +1,27 @@
-import React, { useEffect, useState } from "react";
-import { authService, dbService } from "fbase";
-import { useHistory } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { authService, dbService } from 'fbase';
+import { useHistory } from 'react-router-dom';
 
 const Profile = ({ userObj, refreshUser }) => {
   /* 화면이동에 사용하는 기록 객체를 사용할 수 있는 hook */
   const history = useHistory();
   /* ?? = ES11에서 도입된 null 병합 연산자 */
   const [newDisplayName, setNewDisplayName] = useState(
-    userObj.displayName ?? "User"
+    userObj.displayName ?? 'User'
   );
   const onLogOutClick = () => {
     /* firebase의 로그아웃 */
     authService.signOut();
     /* home으로 보내는 방법 */
-    history.push("/");
+    history.push('/');
   };
 
   const getMyNweets = async () => {
     /* where을 사용해서 색인을 하려면 firebase의 firestorage에 가서 색인설정을 해줘야 한다 */
-    const nweets = await dbService
-      .collection("nweets")
-      .where("creatorId", "==", userObj.uid)
-      .orderBy("createAt", "desc")
+    await dbService
+      .collection('nweets')
+      .where('creatorId', '==', userObj.uid)
+      .orderBy('createAt', 'desc')
       .get();
   };
 
@@ -45,32 +45,32 @@ const Profile = ({ userObj, refreshUser }) => {
       await userObj.updateProfile({
         displayName: newDisplayName,
       });
-      setNewDisplayName("");
+      setNewDisplayName('');
       refreshUser();
     }
   };
 
   return (
-    <div className="container">
-      <form onSubmit={onSubmit} className="profileForm">
+    <div className='container'>
+      <form onSubmit={onSubmit} className='profileForm'>
         <input
           autoFocus
           onChange={onChange}
-          type="text"
-          placeholder="Display name"
+          type='text'
+          placeholder='Display name'
           value={newDisplayName}
-          className="formInput"
+          className='formInput'
         />
         <input
-          type="submit"
-          value="Update Profile"
-          className="formBtn"
+          type='submit'
+          value='Update Profile'
+          className='formBtn'
           style={{
             marginTop: 10,
           }}
         />
       </form>
-      <span className="formBtn cancelBtn logOut" onClick={onLogOutClick}>
+      <span className='formBtn cancelBtn logOut' onClick={onLogOutClick}>
         Log Out
       </span>
     </div>
