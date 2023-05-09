@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { dbService } from "fbase";
-import Nweet from "components/Nweet";
-import NweetFactory from "components/NweetFactory";
+import React, { useEffect, useState } from 'react';
+import { dbService } from 'fbase';
+import Nweet from 'components/Nweet';
+import NweetFactory from 'components/NweetFactory';
 
 const Home = ({ userObj }) => {
   const [nweets, setNweets] = useState([]);
@@ -17,8 +17,8 @@ const Home = ({ userObj }) => {
     /* orderby를 사용하여 정령된 리스트를 받음 */
     /* onSnapshot은 실시간 모든 데이터베이스이벤트에 반응함 */
     dbService
-      .collection("nweets")
-      .orderBy("createAt", "desc")
+      .collection('nweets')
+      .orderBy('createAt', 'desc')
       .onSnapshot((snapshot) => {
         const nweetArray = snapshot.docs.map((doc) => ({
           id: doc.id,
@@ -29,14 +29,14 @@ const Home = ({ userObj }) => {
   };
 
   return (
-    <div className="container">
+    <div className='container'>
       <NweetFactory userObj={userObj} />
       <div style={{ marginTop: 30 }}>
         {nweets.map((nweet) => (
           <Nweet
             key={nweet.id}
             nweetObj={nweet}
-            /* 이 트윗 작성자가 로그인한 유저인이 판단 */
+            /* 이 트윗 작성자가 로그인한 유저인지 판단 */
             isOwner={nweet.creatorId === userObj.uid}
           />
         ))}
